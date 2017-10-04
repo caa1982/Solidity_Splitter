@@ -15,15 +15,15 @@ contract Splitter {
 
     mapping (address => UserStruct) public userStructs;
 
-    function Splitter (address address1, address address2) public {
+    function Splitter (address _carol, address _bob) public {
 
         owner = msg.sender;
-        carol = address1;
-        bob = address2;
+        carol = _carol;
+        bob = _bob;
 
     }
 
-    function split() public payable returns (bool splitted) {
+    function sendSplit(address receiver1, address receiver2) public payable returns (bool success) {
 
         require(msg.value > 0);
 
@@ -31,19 +31,24 @@ contract Splitter {
 
         userStructs[msg.sender].totalSent += msg.value;
 
-        userStructs[bob].balance += amount;
-        userStructs[bob].totalReceived += amount;
+        userStructs[receiver1].balance += amount;
+        userStructs[receiver1].totalReceived += amount;
 
-        userStructs[carol].balance += amount;
-        userStructs[carol].totalReceived += amount;
+        userStructs[receiver2].balance += amount;
+        userStructs[receiver2].totalReceived += amount;
 
-        if (msg.value % 2 > 0)
-            msg.sender.transfer(1);
+        if (msg.value % 2 > 0) msg.sender.transfer(1);
         
         return true;
     }
 
-    function withdrawal() public returns (bool transfer) {
+    function split() public payable {
+        
+        sendSplit({receiver1: carol, receiver2: bob});
+
+    }
+    
+    function withdrawal() public returns (bool success) {
         
         uint withdraw = userStructs[msg.sender].balance;
 
