@@ -21,17 +21,17 @@ contract('Splitter', (accounts) => {
     it("Should send from owner and spilt to carol and bob", () => {
 
         const startingETHOwner = web3.eth.getBalance(owner).toString();
-        let startingBalancecarol;
+        let startingBalanceCarol;
         let startingBalanceBob;
 
-        let endingBalancecarol;
+        let endingBalanceCarol;
         let endingBalanceBob;
 
         const amount = 16000;
 
         return contract.balances(carol, {from : owner})
             .then( (balance) => {
-                startingBalancecarol = balance.toNumber();
+                startingBalanceCarol = balance.toNumber();
                 return contract.balances(bob, {from : owner});
             })
             .then((balance) => {
@@ -40,7 +40,7 @@ contract('Splitter', (accounts) => {
             })
             .then( () =>  contract.balances(carol, {from : owner}) )
             .then( (balance) => {
-                endingBalancecarol = balance;
+                endingBalanceCarol = balance;
                 return contract.balances(bob, {from : owner}) 
             })
             .then( (balance) => {
@@ -49,7 +49,7 @@ contract('Splitter', (accounts) => {
                 
                 const endingETHOwner = web3.eth.getBalance(owner).toString()
 
-                assert.equal(endingBalancecarol, startingBalancecarol + amount / 2, "Amount wasn't correctly split");
+                assert.equal(endingBalanceCarol, startingBalanceCarol + amount / 2, "Amount wasn't correctly split");
                 assert.equal(endingBalanceBob, startingBalanceBob + amount / 2, "Amount wasn't correctly split");
                 assert.equal(endingETHOwner, startingETHOwner - (amount + 12399200000000000), "Amount wasn't sent correctly from owner");
                 
@@ -58,10 +58,10 @@ contract('Splitter', (accounts) => {
 
     it("Should withdraw from carol and bob balances and credit their ETH account", ()=>{
         
-        const startingETHcarol = web3.eth.getBalance(carol).toString();
+        const startingETHCarol = web3.eth.getBalance(carol).toString();
         const startingETHBob = web3.eth.getBalance(bob).toString();
 
-        let Balancecarol;
+        let BalanceCarol;
         let BalanceBob;
 
         amount = 1600;
@@ -71,19 +71,19 @@ contract('Splitter', (accounts) => {
         .then( () =>  contract.withdrawal({from : bob}) )
         .then( () => contract.balances(carol, {from : owner}) )
         .then( (balance) => {
-            Balancecarol = balance.toNumber();
+            BalanceCarol = balance.toNumber();
             return contract.balances(bob, {from : owner});
         })
         .then( (balance) => {
 
             BalanceBob = balance.toNumber();
             
-            const endingETHcarol = web3.eth.getBalance(carol).toString();
+            const endingETHCarol = web3.eth.getBalance(carol).toString();
             const endingETHBob = web3.eth.getBalance(bob).toString();
 
-            assert.equal(Balancecarol, "0", "carol balance is not equal to zero");
+            assert.equal(BalanceCarol, "0", "carol balance is not equal to zero");
             assert.equal(BalanceBob, "0", "bob balance is not equal to zero");
-            assert.isAbove(startingETHcarol, endingETHcarol, "balance wasn't sent correctly");
+            assert.isAbove(startingETHCarol, endingETHCarol, "balance wasn't sent correctly");
             assert.isAbove(startingETHBob, endingETHBob, "balance wasn't sent correctly");
             
         })
