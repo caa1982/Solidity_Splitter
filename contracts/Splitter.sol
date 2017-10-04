@@ -22,7 +22,7 @@ contract Splitter {
 
     }
 
-    function split() public payable returns (bool splited) {
+    function split() public payable returns (bool splitted) {
 
         require(msg.value > 0);
 
