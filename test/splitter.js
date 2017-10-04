@@ -27,7 +27,7 @@ contract('Splitter', (accounts) => {
         let endingBalanceCarol;
         let endingBalanceBob;
 
-        const amount = 16000;
+        const amount = 16000000000000000000;
 
         return contract.balances(carol, {from : owner})
             .then( (balance) => {
@@ -64,7 +64,7 @@ contract('Splitter', (accounts) => {
         let BalanceCarol;
         let BalanceBob;
 
-        amount = 1600;
+        const amount = 16000000000000000000;
 
         return contract.split({value: amount, from: owner})
         .then( () =>  contract.withdrawal({from : carol}) )
@@ -83,8 +83,8 @@ contract('Splitter', (accounts) => {
 
             assert.equal(BalanceCarol, "0", "carol balance is not equal to zero");
             assert.equal(BalanceBob, "0", "bob balance is not equal to zero");
-            assert.isAbove(startingETHCarol, endingETHCarol, "balance wasn't sent correctly");
-            assert.isAbove(startingETHBob, endingETHBob, "balance wasn't sent correctly");
+            assert.isAbove(endingETHCarol, startingETHCarol, "balance wasn't sent correctly");
+            assert.isAbove(endingETHBob, startingETHBob, "balance wasn't sent correctly");
             
         })
     })   
