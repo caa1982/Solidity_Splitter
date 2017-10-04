@@ -2,23 +2,24 @@ pragma solidity ^0.4.4;
 
 contract Splitter {
 
-    struct Addresses {
-        address owner;
-        address carol;
-        address bob;
+    struct UserStruct {
+        uint balance;
+        uint totalSent;
+        uint totalReceived;
+        uint totalWithdrawn;
     }
-    
-    Addresses public addresses;
 
-    mapping (address => uint) public balances;
-    mapping (address => uint) public totalPayed;
-    mapping (address => uint) public totalReceived;
+    address public owner;
+    address public carol;
+    address public bob;
 
-    function Splitter (address carol, address bob) public {
+    mapping (address => UserStruct) public userStructs;
 
-        addresses.owner = msg.sender;
-        addresses.carol = carol;
-        addresses.bob = bob;
+    function Splitter (address address1, address address2) public {
+
+        owner = msg.sender;
+        carol = address1;
+        bob = address2;
 
     }
 
@@ -28,13 +29,13 @@ contract Splitter {
 
         var amount = msg.value / 2;
 
-        totalPayed[msg.sender] += msg.value;
+        userStructs[msg.sender].totalSent += msg.value;
 
-        balances[addresses.bob] += amount;
-        totalReceived[addresses.bob] += amount;
+        userStructs[bob].balance += amount;
+        userStructs[bob].totalReceived += amount;
 
-        balances[addresses.carol] += amount;
-        totalReceived[addresses.carol] += amount;
+        userStructs[carol].balance += amount;
+        userStructs[carol].totalReceived += amount;
 
         if (msg.value % 2 > 0)
             msg.sender.transfer(1);
@@ -44,9 +45,11 @@ contract Splitter {
 
     function withdrawal() public returns (bool transfer) {
         
-        uint withdraw = balances[msg.sender];
+        uint withdraw = userStructs[msg.sender].balance;
 
-        balances[msg.sender] = 0;
+        userStructs[msg.sender].totalWithdrawn += withdraw;
+
+        userStructs[msg.sender].balance = 0;
         
         require(withdraw > 0);
 
@@ -56,8 +59,8 @@ contract Splitter {
     } 
 
     function kill() public {
-        require(msg.sender == addresses.owner);
-        selfdestruct(addresses.owner);
+        require(msg.sender == owner);
+        selfdestruct(owner);
     }
 
 }
