@@ -1,6 +1,6 @@
 const Splitter = artifacts.require("./Splitter.sol");
 
-contract('Splitter', (accounts) => { 
+contract('Splitter', accounts => { 
 
     let contract;
 
@@ -10,11 +10,11 @@ contract('Splitter', (accounts) => {
 
     beforeEach( () => 
         Splitter.new(carol, bob, {from: owner})
-        .then( (instance) => contract = instance )
+        .then( instance => contract = instance )
     );
 
     it("Should be own by the owner", () => 
-        contract.addresses({from : owner}).then( (address) => (_owner) =>
+        contract.addresses({from : owner}).then( address => _owner =>
         assert.striclyEqual(_owner, owner, "Contract is not owned by the owner") )
     )
     
@@ -30,20 +30,20 @@ contract('Splitter', (accounts) => {
         const amount = 16000000000000000000;
 
         return contract.balances(carol, {from : owner})
-            .then( (balance) => {
+            .then( balance => {
                 startingBalanceCarol = balance.toNumber();
                 return contract.balances(bob, {from : owner});
             })
-            .then((balance) => {
+            .then( balance => {
                 startingBalanceBob = balance.toNumber();
                 return contract.split({value: amount, from: owner});
             })
             .then( () =>  contract.balances(carol, {from : owner}) )
-            .then( (balance) => {
+            .then( balance => {
                 endingBalanceCarol = balance;
                 return contract.balances(bob, {from : owner}) 
             })
-            .then( (balance) => {
+            .then( balance => {
                 
                 endingBalanceBob = balance;
                 
@@ -70,11 +70,11 @@ contract('Splitter', (accounts) => {
         .then( () =>  contract.withdrawal({from : carol}) )
         .then( () =>  contract.withdrawal({from : bob}) )
         .then( () => contract.balances(carol, {from : owner}) )
-        .then( (balance) => {
+        .then( balance => {
             BalanceCarol = balance.toNumber();
             return contract.balances(bob, {from : owner});
         })
-        .then( (balance) => {
+        .then( balance => {
 
             BalanceBob = balance.toNumber();
             
