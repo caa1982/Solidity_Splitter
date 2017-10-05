@@ -14,7 +14,7 @@ contract Splitter is Pausable {
 
     address public carol;
     address public bob;
-    
+
     bool private stopped = false;
 
     mapping (address => UserStruct) public userStructs;

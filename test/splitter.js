@@ -14,7 +14,7 @@ contract('Splitter', accounts => {
     );
 
     it("Should be own by the owner", () => 
-        contract.addresses({from : owner}).then( address => _owner =>
+        contract.owner({from : owner}).then(_owner =>
         assert.striclyEqual(_owner, owner, "Contract is not owned by the owner") )
     )
     
