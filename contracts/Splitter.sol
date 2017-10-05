@@ -1,6 +1,8 @@
 pragma solidity ^0.4.4;
 
-contract Splitter {
+import "./Pausable.sol";
+
+contract Splitter is Pausable {
 
     struct UserStruct {
         string name;
@@ -10,9 +12,10 @@ contract Splitter {
         uint totalWithdrawn;
     }
 
-    address public owner;
     address public carol;
     address public bob;
+    
+    bool private stopped = false;
 
     mapping (address => UserStruct) public userStructs;
     
@@ -27,7 +30,7 @@ contract Splitter {
 
     }
 
-    function splitCarolBob() public payable returns (bool success){
+    function splitCarolBob() stopInEmergency public payable returns (bool success){
         
         customSplit({receiver1: carol, receiver2: bob});
 
@@ -35,7 +38,7 @@ contract Splitter {
 
     }
 
-    function registerNameToAddress(address Address, string name) public returns (bool success) {
+    function registerNameToAddress(address Address, string name) stopInEmergency public returns (bool success) {
         
         require(msg.sender == Address);
 
@@ -44,7 +47,7 @@ contract Splitter {
         return true;
     }
 
-    function customSplit(address receiver1, address receiver2) public payable returns (bool success) {
+    function customSplit(address receiver1, address receiver2) stopInEmergency public payable returns (bool success) {
 
         require(msg.value > 0);
 
@@ -63,7 +66,7 @@ contract Splitter {
         return true;
     }
     
-    function withdrawal() public returns (bool success) {
+    function withdrawal() stopInEmergency public returns (bool success) {
         
         uint withdraw = userStructs[msg.sender].balance;
 
@@ -76,11 +79,7 @@ contract Splitter {
         msg.sender.transfer(withdraw);
 
         return true;
-    } 
-
-    function kill() public {
-        require(msg.sender == owner);
-        selfdestruct(owner);
     }
 
 }
+
