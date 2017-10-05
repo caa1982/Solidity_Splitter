@@ -29,29 +29,29 @@ contract('Splitter', accounts => {
 
         const amount = 16000000000000000000;
 
-        return contract.balances(carol, {from : owner})
-            .then( balance => {
-                startingBalanceCarol = balance.toNumber();
-                return contract.balances(bob, {from : owner});
+        return contract.userStructs(bob, {from : owner})
+            .then( result => {
+                startingBalanceCarol = result[1].toNumber();
+                return contract.userStructs(bob, {from : owner});
             })
-            .then( balance => {
-                startingBalanceBob = balance.toNumber();
-                return contract.split({value: amount, from: owner});
+            .then( result => {
+                startingBalanceBob = result[1].toNumber();
+                return contract.splitCarolBob({value: amount, from: owner});
             })
-            .then( () =>  contract.balances(carol, {from : owner}) )
-            .then( balance => {
-                endingBalanceCarol = balance;
-                return contract.balances(bob, {from : owner}) 
+            .then( () =>  contract.userStructs(carol, {from : owner}) )
+            .then( result => {
+                endingBalanceCarol = result[1].toNumber();
+                return contract.userStructs(bob, {from : owner}) 
             })
-            .then( balance => {
+            .then( result => {
                 
-                endingBalanceBob = balance;
+                endingBalanceBob = result[1].toNumber();
                 
                 const endingETHOwner = web3.eth.getBalance(owner).toString()
-
+                
                 assert.equal(endingBalanceCarol, startingBalanceCarol + amount / 2, "Amount wasn't correctly split");
                 assert.equal(endingBalanceBob, startingBalanceBob + amount / 2, "Amount wasn't correctly split");
-                assert.equal(endingETHOwner, startingETHOwner - (amount + 12399200000000000), "Amount wasn't sent correctly from owner");
+                assert.isBelow(endingETHOwner, startingETHOwner - amount, "Amount wasn't sent correctly from owner");
                 
             })
         })
@@ -66,17 +66,17 @@ contract('Splitter', accounts => {
 
         const amount = 16000000000000000000;
 
-        return contract.split({value: amount, from: owner})
+        return contract.splitCarolBob({value: amount, from: owner})
         .then( () =>  contract.withdrawal({from : carol}) )
         .then( () =>  contract.withdrawal({from : bob}) )
-        .then( () => contract.balances(carol, {from : owner}) )
-        .then( balance => {
-            BalanceCarol = balance.toNumber();
-            return contract.balances(bob, {from : owner});
+        .then( () => contract.userStructs(carol, {from : owner}) )
+        .then( result => {
+            BalanceCarol = result[2].toNumber();
+            return contract.userStructs(bob, {from : owner});
         })
-        .then( balance => {
+        .then( result => {
 
-            BalanceBob = balance.toNumber();
+            BalanceBob = result[2].toNumber();
             
             const endingETHCarol = web3.eth.getBalance(carol).toString();
             const endingETHBob = web3.eth.getBalance(bob).toString();
