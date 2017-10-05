@@ -5,7 +5,7 @@ contract Pausable {
     address public owner;
     bool private stopped = false;
 
-     modifier isAdmin() {
+    modifier isAdmin() {
         require(msg.sender == owner);
         _;
     }
