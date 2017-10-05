@@ -23,7 +23,13 @@ contract Splitter {
 
     }
 
-    function sendSplit(address receiver1, address receiver2) public payable returns (bool success) {
+    function splitCarolBob() public payable {
+        
+        customSplit({receiver1: carol, receiver2: bob});
+
+    }
+
+    function customSplit(address receiver1, address receiver2) public payable returns (bool success) {
 
         require(msg.value > 0);
 
@@ -40,12 +46,6 @@ contract Splitter {
         if (msg.value % 2 > 0) msg.sender.transfer(1);
         
         return true;
-    }
-
-    function split() public payable {
-        
-        sendSplit({receiver1: carol, receiver2: bob});
-
     }
     
     function withdrawal() public returns (bool success) {
