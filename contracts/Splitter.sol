@@ -3,6 +3,7 @@ pragma solidity ^0.4.4;
 contract Splitter {
 
     struct UserStruct {
+        string name;
         uint balance;
         uint totalSent;
         uint totalReceived;
@@ -20,13 +21,25 @@ contract Splitter {
         owner = msg.sender;
         carol = _carol;
         bob = _bob;
+        userStructs[owner].name = "Alice";
+        userStructs[carol].name = "Carol";
+        userStructs[bob].name = "Bob";
 
     }
 
-    function splitCarolBob() public payable {
+    function splitCarolBob() public payable returns (bool success){
         
         customSplit({receiver1: carol, receiver2: bob});
 
+        return true;
+
+    }
+
+    function registerName(address Address, string name) public returns (bool success) {
+        
+        userStructs[Address].name = name;
+
+        return true;
     }
 
     function customSplit(address receiver1, address receiver2) public payable returns (bool success) {
