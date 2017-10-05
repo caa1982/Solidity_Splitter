@@ -50,7 +50,7 @@ contract('Splitter', accounts => {
                 
                 assert.equal(endingBalanceCarol, startingBalanceCarol + amount / 2, "Amount wasn't correctly split");
                 assert.equal(endingBalanceBob, startingBalanceBob + amount / 2, "Amount wasn't correctly split");
-                assert.isBelow(endingETHOwner, startingETHOwner - amount, "Amount wasn't sent correctly from owner");
+                assert.isBelow(endingETHOwner, startingETHOwner, "Amount wasn't sent correctly from owner");
                 
             })
         })

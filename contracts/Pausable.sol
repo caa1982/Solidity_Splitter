@@ -17,7 +17,6 @@ contract Pausable {
     modifier stopInEmergency { if (!stopped) _; else revert(); }
     modifier onlyInEmergency { if (stopped) _; }
 
-
     function emergencyWithdrawal() onlyInEmergency isAdmin public returns (bool success) {
         
         msg.sender.transfer(this.balance);
