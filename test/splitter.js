@@ -7,6 +7,7 @@ contract('Splitter', accounts => {
     const owner = accounts[0];
     const carol = accounts[1];
     const bob = accounts[2];
+    const amount = 16000000000000000000;
 
     beforeEach( () => 
         Splitter.new(carol, bob, {from: owner})
@@ -26,8 +27,6 @@ contract('Splitter', accounts => {
 
         let endingBalanceCarol;
         let endingBalanceBob;
-
-        const amount = 16000000000000000000;
 
         return contract.userStructs(bob, {from : owner})
             .then( result => {
@@ -63,8 +62,6 @@ contract('Splitter', accounts => {
 
         let BalanceCarol;
         let BalanceBob;
-
-        const amount = 16000000000000000000;
 
         return contract.splitCarolBob({value: amount, from: owner})
         .then( () =>  contract.withdrawal({from : carol}) )
