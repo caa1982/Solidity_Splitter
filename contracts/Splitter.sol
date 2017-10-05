@@ -37,6 +37,8 @@ contract Splitter {
 
     function registerNameToAddress(address Address, string name) public returns (bool success) {
         
+        require(msg.sender == Address);
+
         userStructs[Address].name = name;
 
         return true;
