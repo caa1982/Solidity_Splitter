@@ -15,7 +15,7 @@ contract Splitter {
     address public bob;
 
     mapping (address => UserStruct) public userStructs;
-
+    
     function Splitter (address _carol, address _bob) public {
 
         owner = msg.sender;
@@ -35,7 +35,7 @@ contract Splitter {
 
     }
 
-    function registerName(address Address, string name) public returns (bool success) {
+    function registerNameToAddress(address Address, string name) public returns (bool success) {
         
         userStructs[Address].name = name;
 
