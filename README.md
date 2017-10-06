@@ -15,4 +15,12 @@
 
 ## How to
 
-#### Run "testrpc" and in separte window run "truffle test"
+### Truffle test
+
+Run "testrpc" and in separte window run "truffle test"
+
+### REMIX
+
+1. upload the two contract
+2. press create on splitter Contract
+3. interact with contract
