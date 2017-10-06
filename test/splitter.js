@@ -46,7 +46,7 @@ contract('Splitter', accounts => {
                 
                 endingBalanceBob = result[0].toNumber();
                 
-                const endingETHOwner = web3.eth.getBalance(owner).toNumber()
+                const endingETHOwner = web3.eth.getBalance(owner).toNumber();
                 
                 assert.equal(endingBalanceCarol, startingBalanceCarol + amount / 2, "Amount wasn't correctly split");
                 assert.equal(endingBalanceBob, startingBalanceBob + amount / 2, "Amount wasn't correctly split");
