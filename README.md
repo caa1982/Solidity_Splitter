@@ -15,4 +15,4 @@
 
 ## How to
 
-### Run "testrpc" and in separte window run "truffle test"
+#### Run "testrpc" and in separte window run "truffle test"
