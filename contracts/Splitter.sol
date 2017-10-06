@@ -8,10 +8,11 @@ contract Splitter is Pausable {
         address from, 
         address receiver1, 
         address receiver2,
-        uint totalAmount
+        uint totalAmount,
+        bool contractPaused
     );
 
-    event Withdraw(address from, uint amount);
+    event Withdraw(address from, uint amount, bool contractPaused);
 
     struct UserStruct {
         uint balance;
@@ -28,8 +29,8 @@ contract Splitter is Pausable {
 
     function sendSplit(address receiver1, address receiver2) public payable returns (bool success) {
 
-        SendSplitt(msg.sender, receiver1, receiver2, msg.value);
-        
+        SendSplitt(msg.sender, receiver1, receiver2, msg.value, !contractPaused);
+
         require(
             !contractPaused && 
             receiver1 != receiver2 && 
@@ -55,7 +56,7 @@ contract Splitter is Pausable {
     
     function withdrawal() public returns (bool success) {
         
-        Withdraw(msg.sender, amount);
+        Withdraw(msg.sender, amount, !contractPaused);
 
         uint amount = userStructs[msg.sender].balance;
 
