@@ -29,7 +29,7 @@ contract Splitter is Pausable {
 
     function sendSplit(address receiver1, address receiver2) public payable returns (bool success) {
 
-        SendSplitt(msg.sender, receiver1, receiver2, msg.value, !contractPaused);
+        SendSplitt(msg.sender, receiver1, receiver2, msg.value, contractPaused);
 
         require(
             !contractPaused && 
@@ -56,7 +56,7 @@ contract Splitter is Pausable {
     
     function withdrawal() public returns (bool success) {
         
-        Withdraw(msg.sender, amount, !contractPaused);
+        Withdraw(msg.sender, amount, contractPaused);
 
         uint amount = userStructs[msg.sender].balance;
 
