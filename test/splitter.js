@@ -53,7 +53,7 @@ contract('Splitter', accounts => {
                 assert.isBelow(endingETHOwner, startingETHOwner, "Amount wasn't sent correctly from owner");
                 
             });
-        });
+    });
 
     it("Should withdraw from carol and bob balances and credit their ETH account", ()=>{
         
