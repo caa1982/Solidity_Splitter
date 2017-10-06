@@ -4,14 +4,14 @@ import "./Pausable.sol";
 
 contract Splitter is Pausable {
 
-    event sendSplitts(
+    event SendSplitt(
         address indexed from, 
         address receiver1, 
         address receiver2,
         uint totalAmount
     );
 
-    event withdraws(address indexed from, uint amount);
+    event Withdraw(address indexed from, uint amount);
 
     struct UserStruct {
         uint balance;
@@ -48,7 +48,7 @@ contract Splitter is Pausable {
 
         if (msg.value % 2 > 0) msg.sender.transfer(1);
 
-        sendSplitts(msg.sender, receiver1, receiver2, msg.value);
+        SendSplitt(msg.sender, receiver1, receiver2, msg.value);
         
         return true;
     }
@@ -67,7 +67,7 @@ contract Splitter is Pausable {
 
         msg.sender.transfer(amount);
 
-        withdraws(msg.sender, amount);
+        Withdraw(msg.sender, amount);
 
         return true;
     } 
