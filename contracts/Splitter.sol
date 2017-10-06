@@ -32,9 +32,7 @@ contract Splitter is Pausable {
             !contractPaused && 
             receiver1 != receiver2 && 
             receiver1 != 0 && 
-            receiver2 != 0 && 
-            receiver1 != msg.sender && 
-            receiver2 != msg.sender &&
+            receiver2 != 0 &&
             msg.value > 0 
         );
 
