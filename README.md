@@ -22,6 +22,6 @@
 
 ### REMIX
 
-1. Upload the two contract
+1. Upload the two contracts
 2. Press create on splitter Contract
 3. Interact with contract
