@@ -17,7 +17,7 @@ contract('Splitter', accounts => {
     it("Should be own by the owner", () => 
         contract.owner({from : owner}).then(_owner =>
         assert.equal(_owner, owner, "Contract is not owned by the owner") )
-    )
+    );
     
     it("Should send from owner and spilt to carol and bob", () => {
 
@@ -52,8 +52,8 @@ contract('Splitter', accounts => {
                 assert.equal(endingBalanceBob, startingBalanceBob + amount / 2, "Amount wasn't correctly split");
                 assert.isBelow(endingETHOwner, startingETHOwner, "Amount wasn't sent correctly from owner");
                 
-            })
-        })
+            });
+        });
 
     it("Should withdraw from carol and bob balances and credit their ETH account", ()=>{
         
@@ -83,8 +83,8 @@ contract('Splitter', accounts => {
             assert.isAbove(endingETHCarol, startingETHCarol, "balance wasn't sent correctly");
             assert.isAbove(endingETHBob, startingETHBob, "balance wasn't sent correctly");
             
-        })
-    })   
+        });
+    });
 
 
 });
