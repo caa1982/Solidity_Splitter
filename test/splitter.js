@@ -7,7 +7,7 @@ contract('Splitter', accounts => {
     const owner = accounts[0];
     const carol = accounts[1];
     const bob = accounts[2];
-    const amount = 16000000000000000000;
+    const amount = web3.toWei(16, "ether");
 
     beforeEach( () => 
         Splitter.new(carol, bob, {from: owner})
