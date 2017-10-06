@@ -30,21 +30,21 @@ contract('Splitter', accounts => {
 
         return contract.userStructs(bob, {from : owner})
             .then( result => {
-                startingBalanceCarol = result[1].toNumber();
+                startingBalanceCarol = result[0].toNumber();
                 return contract.userStructs(bob, {from : owner});
             })
             .then( result => {
-                startingBalanceBob = result[1].toNumber();
-                return contract.splitCarolBob({value: amount, from: owner});
+                startingBalanceBob = result[0].toNumber();
+                return contract.sendSplit(carol, bob, {value: amount, from: owner});
             })
             .then( () =>  contract.userStructs(carol, {from : owner}) )
             .then( result => {
-                endingBalanceCarol = result[1].toNumber();
+                endingBalanceCarol = result[0].toNumber();
                 return contract.userStructs(bob, {from : owner}) 
             })
             .then( result => {
                 
-                endingBalanceBob = result[1].toNumber();
+                endingBalanceBob = result[0].toNumber();
                 
                 const endingETHOwner = web3.eth.getBalance(owner).toString()
                 
@@ -63,17 +63,17 @@ contract('Splitter', accounts => {
         let BalanceCarol;
         let BalanceBob;
 
-        return contract.splitCarolBob({value: amount, from: owner})
+        return contract.sendSplit(carol, bob, {value: amount, from: owner})
         .then( () =>  contract.withdrawal({from : carol}) )
         .then( () =>  contract.withdrawal({from : bob}) )
         .then( () => contract.userStructs(carol, {from : owner}) )
         .then( result => {
-            BalanceCarol = result[2].toNumber();
+            BalanceCarol = result[0].toNumber();
             return contract.userStructs(bob, {from : owner});
         })
         .then( result => {
 
-            BalanceBob = result[2].toNumber();
+            BalanceBob = result[0].toNumber();
             
             const endingETHCarol = web3.eth.getBalance(carol).toString();
             const endingETHBob = web3.eth.getBalance(bob).toString();

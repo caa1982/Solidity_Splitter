@@ -5,13 +5,13 @@ import "./Pausable.sol";
 contract Splitter is Pausable {
 
     event SendSplitt(
-        address indexed from, 
+        address from, 
         address receiver1, 
         address receiver2,
         uint totalAmount
     );
 
-    event Withdraw(address indexed from, uint amount);
+    event Withdraw(address from, uint amount);
 
     struct UserStruct {
         uint balance;
