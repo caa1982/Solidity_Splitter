@@ -55,12 +55,10 @@ contract Splitter is Pausable {
     
     function withdrawal() public returns (bool success) {
         
-        require(!contractPaused);
-
         uint amount = userStructs[msg.sender].balance;
 
-        require(amount > 0);
-        
+        require(!contractPaused && amount > 0);
+
         userStructs[msg.sender].totalWithdrawn += amount;
 
         userStructs[msg.sender].balance = 0;
