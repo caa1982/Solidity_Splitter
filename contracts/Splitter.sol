@@ -4,56 +4,43 @@ import "./Pausable.sol";
 
 contract Splitter is Pausable {
 
+    event sendSplitts(
+        address indexed from, 
+        address receiver1, 
+        address receiver2,
+        uint totalAmount
+    );
+
+    event withdraws(address indexed from, uint amount);
+
     struct UserStruct {
-        string name;
         uint balance;
-        uint totalSent;
+        uint totalSplitted;
         uint totalReceived;
         uint totalWithdrawn;
     }
 
-    address public carol;
-    address public bob;
-
-    bool private stopped = false;
-
     mapping (address => UserStruct) public userStructs;
     
-    function Splitter (address _carol, address _bob) public {
-
+    function Splitter () public {
         owner = msg.sender;
-        carol = _carol;
-        bob = _bob;
-        userStructs[owner].name = "Alice";
-        userStructs[carol].name = "Carol";
-        userStructs[bob].name = "Bob";
-
     }
 
-    function splitCarolBob() stopInEmergency public payable returns (bool success){
-        
-        customSplit({receiver1: carol, receiver2: bob});
+    function sendSplit(address receiver1, address receiver2) public payable returns (bool success) {
 
-        return true;
-
-    }
-
-    function registerNameToAddress(address Address, string name) stopInEmergency public returns (bool success) {
-        
-        require(msg.sender == Address);
-
-        userStructs[Address].name = name;
-
-        return true;
-    }
-
-    function customSplit(address receiver1, address receiver2) stopInEmergency public payable returns (bool success) {
-
-        require(msg.value > 0);
+        require(
+            !contractPaused && 
+            receiver1 != receiver2 && 
+            receiver1 != 0 && 
+            receiver2 != 0 && 
+            receiver1 != msg.sender && 
+            receiver2 != msg.sender &&
+            msg.value > 0 
+        );
 
         var amount = msg.value / 2;
 
-        userStructs[msg.sender].totalSent += msg.value;
+        userStructs[msg.sender].totalSplitted += msg.value;
 
         userStructs[receiver1].balance += amount;
         userStructs[receiver1].totalReceived += amount;
@@ -62,24 +49,30 @@ contract Splitter is Pausable {
         userStructs[receiver2].totalReceived += amount;
 
         if (msg.value % 2 > 0) msg.sender.transfer(1);
+
+        sendSplitts(msg.sender, receiver1, receiver2, msg.value);
         
         return true;
     }
     
-    function withdrawal() stopInEmergency public returns (bool success) {
+    function withdrawal() public returns (bool success) {
         
-        uint withdraw = userStructs[msg.sender].balance;
+        require(!contractPaused);
 
-        userStructs[msg.sender].totalWithdrawn += withdraw;
+        uint amount = userStructs[msg.sender].balance;
+
+        userStructs[msg.sender].totalWithdrawn += amount;
 
         userStructs[msg.sender].balance = 0;
         
-        require(withdraw > 0);
+        require(amount > 0);
 
-        msg.sender.transfer(withdraw);
+        msg.sender.transfer(amount);
+
+        withdraws(msg.sender, amount);
 
         return true;
-    }
+    } 
+
 
 }
-

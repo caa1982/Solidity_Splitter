@@ -2,27 +2,25 @@ pragma solidity ^0.4.4;
 
 contract Pausable {
     
+    bool public contractPaused;
     address public owner;
-    bool private stopped = false;
 
     modifier isAdmin() {
         require(msg.sender == owner);
         _;
     }
 
-    function toggleContractActive() isAdmin public{
-        stopped = !stopped;
+    function pauseContract() isAdmin public returns (bool success){
+        contractPaused = !contractPaused;
+        return true;
     }
-    
-    modifier stopInEmergency { if (!stopped) _; else revert(); }
-    modifier onlyInEmergency { if (stopped) _; }
 
-    function emergencyWithdrawal() onlyInEmergency isAdmin public returns (bool success) {
-        
+    function emergencyWithdrawal() isAdmin public returns (bool success) {
+        require(contractPaused);
+
         msg.sender.transfer(this.balance);
 
         return true;
-
     }
 
 }
