@@ -59,11 +59,11 @@ contract Splitter is Pausable {
 
         uint amount = userStructs[msg.sender].balance;
 
+        require(amount > 0);
+        
         userStructs[msg.sender].totalWithdrawn += amount;
 
         userStructs[msg.sender].balance = 0;
-        
-        require(amount > 0);
 
         msg.sender.transfer(amount);
 
