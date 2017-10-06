@@ -78,8 +78,8 @@ contract('Splitter', accounts => {
             const endingETHCarol = web3.eth.getBalance(carol).toNumber();
             const endingETHBob = web3.eth.getBalance(bob).toNumber();
 
-            assert.equal(BalanceCarol, "0", "carol balance is not equal to zero");
-            assert.equal(BalanceBob, "0", "bob balance is not equal to zero");
+            assert.equal(BalanceCarol, 0, "carol balance is not equal to zero");
+            assert.equal(BalanceBob, 0, "bob balance is not equal to zero");
             assert.isAbove(endingETHCarol, startingETHCarol, "balance wasn't sent correctly");
             assert.isAbove(endingETHBob, startingETHBob, "balance wasn't sent correctly");
             
