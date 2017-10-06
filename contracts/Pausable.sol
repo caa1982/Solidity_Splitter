@@ -5,17 +5,17 @@ contract Pausable {
     bool public contractPaused;
     address public owner;
 
-    modifier isAdmin() {
+    modifier isOwner() {
         require(msg.sender == owner);
         _;
     }
 
-    function pauseContract() isAdmin public returns (bool success){
+    function pauseContract() isOwner public returns (bool success){
         contractPaused = !contractPaused;
         return true;
     }
 
-    function emergencyWithdrawal() isAdmin public returns (bool success) {
+    function emergencyWithdrawal() isOwner public returns (bool success) {
         require(contractPaused);
 
         msg.sender.transfer(this.balance);
